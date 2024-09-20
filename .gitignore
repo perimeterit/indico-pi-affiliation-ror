@@ -1,0 +1,35 @@
+data/*
+*.env
+.env
+.devcontainer
+
+*.pyc
+backups/
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+__pycache__
+url_map.json
+webpack-build-config.json
+
+# IDE files
+.idea/
+
+url_map.json
+webpack-build-config.json
