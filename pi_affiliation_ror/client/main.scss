@@ -1,0 +1,15 @@
+/* move search icon a bit to the left from the end of input el */
+.ui.icon.input > i.icon {
+  margin-right: 7px;
+}
+
+/* move search icon a bit to the left from the end of input el on the Management page */
+.management-page .ui.icon.input > i.icon {
+  margin-right: 20px;
+}
+
+/* make search result dropdown scrollable */
+.ui.search > .results {
+  overflow-y: auto;
+  max-height: 300px;
+}
