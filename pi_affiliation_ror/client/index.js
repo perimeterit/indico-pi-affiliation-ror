@@ -14,7 +14,7 @@ const rorField = {
     settingsModalSize: "tiny",
     noRequired: true,
     hasPrice: false,
-    icon: "location", //"user", info, location, search
+    icon: "location", //"user", "info", "location", "search"
     renderAsFieldset: false,
   },
 };
