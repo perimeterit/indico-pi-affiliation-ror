@@ -12,7 +12,7 @@ const rorField = {
     // settingsFormInitialData: accompanyingPersonsSettingsInitialData,
     // settingsFormInitialData: rorAffiliationSettingsInitialData,
     settingsModalSize: "tiny",
-    noRequired: true,
+    noRequired: false,
     hasPrice: false,
     icon: "location", //"user", "info", "location", "search"
     renderAsFieldset: false,
