@@ -28,4 +28,4 @@ class RORField(RegistrationFormFieldBase):
             return ''
         
         item = reg_data[0] 
-        return f'{item['rorId']}, {item['institutionName']}' if 'institutionName' in item else ''
+        return f'{item['institutionName']} ({item['rorId']})' if 'institutionName' in item else ''
