@@ -31,7 +31,8 @@ function RORComponent({ id, value, disabled, required, onChange, name }) {
   function rorReducer(state, action) {
     switch (action.type) {
       case "CLEAN_QUERY":
-        return initialState;
+        return { ...state, rorValue: "" };
+      // return initialState;
       case "START_SEARCH":
         return { ...state, loading: true, rorValue: action.query };
       case "FINISH_SEARCH":
