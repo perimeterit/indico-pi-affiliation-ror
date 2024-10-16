@@ -1,4 +1,4 @@
-from marshmallow import ValidationError, fields, post_load, pre_load, validate
+from marshmallow import fields #, ValidationError,  post_load, pre_load, validate
 
 from indico.core.marshmallow import mm
 from indico.modules.events.registration.fields.base import RegistrationFormFieldBase

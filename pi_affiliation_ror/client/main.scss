@@ -4,8 +4,15 @@
 }
 
 /* move search icon a bit to the left from the end of input el on the Management page */
-.management-page .ui.icon.input > i.icon {
+.management-page #registration-form-setup-container .ui.icon.input > i.icon {
   margin-right: 20px;
+}
+
+.management-page
+  #registration-form-submission-container
+  .ui.icon.input
+  > i.icon {
+  margin-right: 68px;
 }
 
 /* make search result dropdown scrollable */

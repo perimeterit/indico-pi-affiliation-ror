@@ -16,13 +16,13 @@ import _ from "lodash";
 import "../../main.scss";
 
 const ROR_API_QUERY = "https://api.ror.org/organizations?query=";
-const ROR_API_URL = "https://api.ror.org/organizations?affiliation=";
+// const ROR_API_URL = "https://api.ror.org/organizations?affiliation=";
 
 function RORComponent({ id, value, disabled, required, onChange, name }) {
   const initialState = {
     loading: false,
     results: [],
-    rorValue: "",
+    rorValue: value.length ? value[0]["institutionName"] : "",
   };
 
   const [state, dispatch] = useReducer(rorReducer, initialState);
@@ -43,9 +43,6 @@ function RORComponent({ id, value, disabled, required, onChange, name }) {
             aliases: result.aliases?.toString(),
             country: result.country?.country_name,
             type: result.types?.toString(),
-
-            // title: result.organization.id,
-            // description: result.organization.name, //aliases.toString(),
           };
         });
 
@@ -75,22 +72,12 @@ function RORComponent({ id, value, disabled, required, onChange, name }) {
           try {
             const res = await indicoAxios.get(url);
             const data = res.data;
-            // console.log(
-            //   "URL",
-            //   `${ROR_API_QUERY}"${encodeURIComponent(searchParameter)}"`,
-            //   `${ROR_API_QUERY}${encodeURIComponent(
-            //     '"' + searchParameter + '"'
-            //   )}`,
-            //   url
-            // );
-            // console.log("ROR fetched", data);
-
             dispatch({
               type: "FINISH_SEARCH",
               results: data.items,
             });
           } catch (error) {
-            handleAxiosError(e);
+            // handleAxiosError(e);
             return;
           }
         }
