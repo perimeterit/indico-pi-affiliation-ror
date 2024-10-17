@@ -15,6 +15,7 @@ import _ from "lodash";
 
 import "../../main.scss";
 
+//use the ROR query parameter
 const ROR_API_QUERY = "https://api.ror.org/organizations?query=";
 // const ROR_API_URL = "https://api.ror.org/organizations?affiliation=";
 
@@ -23,18 +24,24 @@ function RORComponent({ id, value, disabled, required, onChange, name }) {
     loading: false,
     results: [],
     rorValue: value.length ? value[0]["institutionName"] : "",
+    selectionMade: false,
   };
 
   const [state, dispatch] = useReducer(rorReducer, initialState);
-  const { loading, results, rorValue } = state;
+  const { loading, results, rorValue, selectionMade } = state;
 
   function rorReducer(state, action) {
     switch (action.type) {
       case "CLEAN_QUERY":
-        return { ...state, loading: false, rorValue: "" };
+        return { ...state, loading: false, rorValue: "", selectionMade: false };
       // return initialState;
       case "START_SEARCH":
-        return { ...state, loading: true, rorValue: action.query };
+        return {
+          ...state,
+          loading: true,
+          rorValue: action.query,
+          selectionMade: false,
+        };
       case "FINISH_SEARCH":
         const ror_data = action.results.map((result) => {
           return {
@@ -46,10 +53,14 @@ function RORComponent({ id, value, disabled, required, onChange, name }) {
             type: result.types?.toString(),
           };
         });
-
-        return { ...state, loading: false, results: ror_data };
+        return {
+          ...state,
+          loading: false,
+          results: ror_data,
+          selectionMade: false,
+        };
       case "UPDATE_SELECTION":
-        return { ...state, rorValue: action.selection };
+        return { ...state, rorValue: action.selection, selectionMade: true };
 
       default:
         throw new Error();
@@ -100,6 +111,34 @@ function RORComponent({ id, value, disabled, required, onChange, name }) {
     onChange(data);
   }
 
+  // user selected an affiliation from the ROR dropdown
+  function handleResultSelected(e, data) {
+    console.log("result selected", data);
+    dispatch({
+      type: "UPDATE_SELECTION",
+      selection: data.result.description,
+    });
+    handleChange([
+      {
+        rorId: data.result.id,
+        institutionName: data.result.description,
+      },
+    ]);
+  }
+
+  // on blur, check if a selection from the ROR list was made and it not, then
+  // take whatever was entered and consider it a non-ROR affilation
+  function handleOnBlur(e, data) {
+    if (!selectionMade) {
+      handleChange([
+        {
+          rorId: "",
+          institutionName: rorValue,
+        },
+      ]);
+    }
+  }
+
   function resultRenderer(data) {
     return (
       <div className="content">
@@ -120,19 +159,9 @@ function RORComponent({ id, value, disabled, required, onChange, name }) {
           input={{ icon: "search", fluid: true }}
           placeholder="ROR search..."
           resultRenderer={resultRenderer}
-          onResultSelect={(e, data) => {
-            dispatch({
-              type: "UPDATE_SELECTION",
-              selection: data.result.description,
-            });
-            handleChange([
-              {
-                rorId: data.result.id,
-                institutionName: data.result.description,
-              },
-            ]);
-          }}
+          onResultSelect={handleResultSelected}
           onSearchChange={handleSearchChange}
+          onBlur={handleOnBlur}
           results={results}
           value={rorValue}
           id={id}

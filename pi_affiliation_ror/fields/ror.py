@@ -1,4 +1,4 @@
-from marshmallow import fields #, ValidationError,  post_load, pre_load, validate
+from marshmallow import fields, ValidationError, validate #,  post_load, pre_load
 
 from indico.core.marshmallow import mm
 from indico.modules.events.registration.fields.base import RegistrationFormFieldBase
@@ -7,9 +7,10 @@ from indico.util.marshmallow import not_empty
 
 
 class RORFieldDataSchema(mm.Schema):
-    # rorId = fields.String(required=True, validate=not_empty)  # noqa: N815
-    rorId = fields.String(validate=not_empty)  # noqa: N815
-    institutionName = fields.String(validate=not_empty)  # noqa: N815
+    # rorId = fields.String(validate=not_empty)  # noqa: N815
+    # institutionName = fields.String(validate=not_empty)  # noqa: N815
+    rorId = fields.String()  # noqa: N815
+    institutionName = fields.String()  # noqa: N815
 
 class RORField(RegistrationFormFieldBase):
     name = 'ext__ror'
@@ -28,4 +29,5 @@ class RORField(RegistrationFormFieldBase):
             return ''
         
         item = reg_data[0] 
-        return f'{item['institutionName']} ({item['rorId']})' if 'institutionName' in item else ''
+        return f'{item['institutionName']} ({item['rorId'] if item['rorId'] else '-non ROR-'})' if 'institutionName' in item else ''
+    
