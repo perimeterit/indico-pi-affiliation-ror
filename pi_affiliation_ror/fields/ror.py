@@ -29,5 +29,8 @@ class RORField(RegistrationFormFieldBase):
             return ''
         
         item = reg_data[0] 
-        return f'{item['institutionName']} ({item['rorId'] if item['rorId'] else '-non ROR-'})' if 'institutionName' in item else ''
-    
+        if 'institutionName' in item and item['institutionName']:
+            return f'{item['institutionName']} ({item['rorId'] if item['rorId'] else '-non ROR-'})'
+        
+        return ''
+  
