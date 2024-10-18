@@ -105,7 +105,6 @@ function RORComponent({ id, value, disabled, required, onChange, name }) {
 
   // user selected an affiliation from the ROR dropdown
   function handleResultSelected(e, data) {
-    console.log("result selected", data);
     dispatch({
       type: "UPDATE_SELECTION",
       selection: data.result.description,
