@@ -36,12 +36,12 @@ class RORField(RegistrationFormFieldBase):
         return ''
     
     def get_validators(self, existing_registration):
+        # if the field is required, then make sure that an institution name is entered
         def _check_affilation_name_exists(new_data):
             if self.form_item.is_required:
                 if new_data:
                     institution = new_data[0]['institutionName'] or ''
                     if not institution:
-                        print("No institute here")
                         raise ValidationError(_('Please enter an Affiliation'))
                         
                 if not new_data:

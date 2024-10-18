@@ -1,23 +1,52 @@
 import PropTypes from "prop-types";
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useReducer,
-  useCallback,
-} from "react";
+import React, { useEffect, useRef, useReducer, useCallback } from "react";
 
 import { GridColumn, Search, Grid } from "semantic-ui-react";
 
 import { FinalField, validators as v } from "indico/react/forms";
 import { indicoAxios, handleAxiosError } from "indico/utils/axios";
-import _ from "lodash";
+// import _ from "lodash";
 
 import "../../main.scss";
 
-//use the ROR query parameter
+//use ROR query parameter
 const ROR_API_QUERY = "https://api.ror.org/organizations?query=";
-// const ROR_API_URL = "https://api.ror.org/organizations?affiliation=";
+
+function rorReducer(state, action) {
+  switch (action.type) {
+    case "CLEAN_QUERY":
+      return { ...state, loading: false, rorValue: "", selectionMade: false };
+    case "START_SEARCH":
+      return {
+        ...state,
+        loading: true,
+        rorValue: action.query,
+        selectionMade: false,
+      };
+    case "FINISH_SEARCH":
+      const ror_data = action.results.map((result) => {
+        return {
+          id: result.id,
+          title: result.id,
+          description: result.name,
+          aliases: result.aliases?.toString(),
+          country: result.country?.country_name,
+          type: result.types?.toString(),
+        };
+      });
+      return {
+        ...state,
+        loading: false,
+        results: ror_data,
+        selectionMade: false,
+      };
+    case "UPDATE_SELECTION":
+      return { ...state, rorValue: action.selection, selectionMade: true };
+
+    default:
+      throw new Error();
+  }
+}
 
 function RORComponent({ id, value, disabled, required, onChange, name }) {
   const initialState = {
@@ -29,43 +58,6 @@ function RORComponent({ id, value, disabled, required, onChange, name }) {
 
   const [state, dispatch] = useReducer(rorReducer, initialState);
   const { loading, results, rorValue, selectionMade } = state;
-
-  function rorReducer(state, action) {
-    switch (action.type) {
-      case "CLEAN_QUERY":
-        return { ...state, loading: false, rorValue: "", selectionMade: false };
-      // return initialState;
-      case "START_SEARCH":
-        return {
-          ...state,
-          loading: true,
-          rorValue: action.query,
-          selectionMade: false,
-        };
-      case "FINISH_SEARCH":
-        const ror_data = action.results.map((result) => {
-          return {
-            id: result.id,
-            title: result.id,
-            description: result.name,
-            aliases: result.aliases?.toString(),
-            country: result.country?.country_name,
-            type: result.types?.toString(),
-          };
-        });
-        return {
-          ...state,
-          loading: false,
-          results: ror_data,
-          selectionMade: false,
-        };
-      case "UPDATE_SELECTION":
-        return { ...state, rorValue: action.selection, selectionMade: true };
-
-      default:
-        throw new Error();
-    }
-  }
 
   const timeoutRef = useRef();
   const handleSearchChange = useCallback((e, data) => {
@@ -126,8 +118,8 @@ function RORComponent({ id, value, disabled, required, onChange, name }) {
     ]);
   }
 
-  // on blur, check if a selection from the ROR list was made and it not, then
-  // take whatever was entered and consider it a non-ROR affilation
+  // on blur, check if a selection from the ROR list was made and if not, then
+  // take whatever text was entered and consider it a non-ROR affilation, set an empty rorId
   function handleOnBlur(e, data) {
     if (!selectionMade) {
       handleChange([
@@ -155,6 +147,7 @@ function RORComponent({ id, value, disabled, required, onChange, name }) {
     <Grid>
       <GridColumn width={12}>
         <Search
+          type="text"
           loading={loading}
           input={{ icon: "search", fluid: true }}
           placeholder="ROR search..."
@@ -165,10 +158,8 @@ function RORComponent({ id, value, disabled, required, onChange, name }) {
           results={results}
           value={rorValue}
           id={id}
-          type="text"
           name={name}
           fluid
-          required={required}
         />
       </GridColumn>
     </Grid>
@@ -222,9 +213,4 @@ RORInput.defaultProps = {
   disabled: false,
   institutionName: "",
   rorId: "",
-};
-
-export const rorAffiliationSettingsInitialData = {
-  rorId: "",
-  institutionName: "",
 };
