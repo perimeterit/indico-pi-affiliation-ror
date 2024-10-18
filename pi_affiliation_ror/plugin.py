@@ -1,11 +1,8 @@
 from indico.core.plugins import IndicoPlugin
 from indico.core import signals
 
-# from .fields.ror import RORField
-# from pi_affiliation_ror.blueprint import blueprint
 from indico.modules.events.registration.fields.base import RegistrationFormFieldBase
 from indico.web.fields import get_field_definitions
-
 
 class PIAffiliationROR(IndicoPlugin):
     """PI Affiliation ROR Plugin
@@ -21,9 +18,6 @@ class PIAffiliationROR(IndicoPlugin):
         self.connect(signals.core.get_fields, self._get_fields)
         self.connect(signals.core.app_created, self._check_field_definitions)
 
-    # def get_blueprints(self):
-    #     yield blueprint
-        
     def _get_fields(self, sender, **kwargs):
         from .fields.ror import RORField
         
@@ -36,6 +30,5 @@ class PIAffiliationROR(IndicoPlugin):
         """Get a dict with all registration field types."""
 
         defs = get_field_definitions(RegistrationFormFieldBase)
-        # defs = get_field_definitions(RORField)
         return defs
     
