@@ -32,6 +32,7 @@ function rorReducer(state, action) {
           aliases: result.aliases?.toString(),
           country: result.country?.country_name,
           type: result.types?.toString(),
+          city: result.addresses?.at(0).city,
         };
       });
       return {
@@ -135,7 +136,8 @@ function RORComponent({ id, value, disabled, required, onChange, name }) {
       <div className="content">
         <div className="title">{data.description}</div>
         <small>
-          {data.type} {data.country ? ", " + data.country : ""}
+          {data.city}
+          {data.country ? ", " + data.country : ""} ({data.type})
         </small>
         <div className="description">{data.aliases}</div>
       </div>
