@@ -5,9 +5,8 @@ import { GridColumn, Search, Grid } from "semantic-ui-react";
 
 import { FinalField, validators as v } from "indico/react/forms";
 import { indicoAxios, handleAxiosError } from "indico/utils/axios";
-// import _ from "lodash";
 
-import "../../main.scss";
+import "./main.scss";
 
 //use ROR query parameter
 const ROR_API_QUERY = "https://api.ror.org/organizations?query=";
@@ -82,7 +81,6 @@ function RORComponent({ id, value, disabled, required, onChange, name }) {
               results: data.items,
             });
           } catch (error) {
-            // handleAxiosError(e);
             return;
           }
         }

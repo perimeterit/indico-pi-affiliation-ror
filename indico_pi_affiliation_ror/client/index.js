@@ -1,6 +1,6 @@
 import { registerPluginObject } from "indico/utils/plugins";
 
-import RORInput from "./forms/fields/RORInput";
+import RORInput from "./RORInput";
 
 const PLUGIN_NAME = "pi_affiliation_ror";
 
