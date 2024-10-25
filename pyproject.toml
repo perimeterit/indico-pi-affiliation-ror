@@ -1,6 +1,6 @@
 [project]
 name = "indico-plugin-pi-affiliation-ror"
-version = "1.0.3"
+version = "1.0.4"
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.12.2, <3.13"
@@ -18,7 +18,7 @@ dependencies = [
 ]
 
 [project.entry-points."indico.plugins"]
-pi_affiliation_ror = "pi_affiliation_ror.plugin:PIAffiliationROR"
+pi_affiliation_ror = "indico_pi_affiliation_ror.plugin:PIAffiliationROR"
 
 [project.urls]
 GitHub = "https://github.com/perimeterit/indico-pi-affiliation-ror"
@@ -28,19 +28,19 @@ requires = ["hatchling==1.25.0"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build]
-packages = ['pi_affiliation_ror']
+packages = ['indico_pi_affiliation_ror']
 exclude = [
     '*.no-header',
     '.keep',
     # exclude original client sources (they are all included in source maps anyway)
-    'pi_affiliation_ror*/client/',
+    'indico_pi_affiliation_ror*/client/',
     # no need for tests outside development
     'test_snapshots/',
     'tests/',
     '*_test.py',
 ]
 artifacts = [
-    'pi_affiliation_ror*/translations/**/messages-react.json',
-    'pi_affiliation_ror*/translations/**/*.mo',
-    'pi_affiliation_ror*/static/dist/',
+    'indico_pi_affiliation_ror*/translations/**/messages-react.json',
+    'indico_pi_affiliation_ror*/translations/**/*.mo',
+    'indico_pi_affiliation_ror*/static/dist/',
 ]

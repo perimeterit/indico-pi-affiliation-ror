@@ -25,13 +25,13 @@ class RORField(RegistrationFormFieldBase):
         return {'allow_none': not self.form_item.is_required}
     
     def get_friendly_data(self, registration_data, for_humans=False, for_search=False):
-        reg_data = registration_data.data  # if registration_data else None
+        reg_data = registration_data.data
         if not reg_data:
             return ''
-        
+
         item = reg_data[0] 
-        if 'institutionName' in item and item['institutionName']:
-            return f'{item['institutionName']} ({item['rorId'] if item['rorId'] else '-non ROR-'})'
+        if item.get('institutionName'):
+            return f'{item['institutionName']} ({item['rorId'] or '-non ROR-'})'
         
         return ''
     
