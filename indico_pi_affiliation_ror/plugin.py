@@ -1,5 +1,6 @@
 from indico.core.plugins import IndicoPlugin
 from indico.core import signals
+from indico.modules.events.registration.fields.base import RegistrationFormFieldBase
 
 class PIAffiliationROR(IndicoPlugin):
     """PI Affiliation ROR Plugin
@@ -12,7 +13,7 @@ class PIAffiliationROR(IndicoPlugin):
 
         self.inject_bundle('main.js')
         self.inject_bundle('main.css')
-        self.connect(signals.core.get_fields, self._get_fields)
+        self.connect(signals.core.get_fields, self._get_fields, sender=RegistrationFormFieldBase)
 
     def _get_fields(self, sender, **kwargs):
         from .ror import RORField
