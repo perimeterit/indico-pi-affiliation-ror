@@ -1,6 +1,6 @@
 [project]
 name = "indico-plugin-pi-affiliation-ror"
-version = "1.0.4"
+version = "1.0.5"
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.12.2, <3.13"
