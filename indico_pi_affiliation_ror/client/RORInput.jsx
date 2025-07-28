@@ -9,7 +9,7 @@ import { indicoAxios, handleAxiosError } from "indico/utils/axios";
 import "./main.scss";
 
 //use ROR query parameter
-const ROR_API_QUERY = "https://api.ror.org/organizations?query=";
+const ROR_API_QUERY = "https://api.ror.org/v1/organizations?query=";
 
 function rorReducer(state, action) {
   switch (action.type) {
