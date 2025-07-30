@@ -9,7 +9,7 @@ import { indicoAxios, handleAxiosError } from "indico/utils/axios";
 import "./main.scss";
 
 //use ROR query parameter
-const ROR_API_QUERY = "https://api.ror.org/v1/organizations?query=";
+const ROR_API_QUERY = "https://api.ror.org/v2/organizations?query=";
 
 function rorReducer(state, action) {
   switch (action.type) {
@@ -24,14 +24,27 @@ function rorReducer(state, action) {
       };
     case "FINISH_SEARCH":
       const ror_data = action.results.map((result) => {
+        const description = result.names.find((name) =>
+          name.types.includes("ror_display")
+        );
+        const aliases = result.names.find((name) =>
+          name.types.includes("alias")
+        );
+
+        let type = result.types?.toString() || "";
+        type = type.charAt(0).toUpperCase() + type.slice(1);
+        const location = result.locations?.at(0);
+        const country = location?.geonames_details?.country_name || "";
+        const city = location?.geonames_details?.name || "";
+
         return {
           id: result.id,
           title: result.id,
-          description: result.name,
-          aliases: result.aliases?.toString(),
-          country: result.country?.country_name,
-          type: result.types?.toString(),
-          city: result.addresses?.at(0).city,
+          description: description.value || "",
+          aliases: aliases?.value || "",
+          country: country,
+          type: type,
+          city: city,
         };
       });
       return {
